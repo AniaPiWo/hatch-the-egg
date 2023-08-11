@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "You will be building a simple game using TypeScript and OOP. It's going to be about hatching a Tamagotchi's egg!",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsc -w"
