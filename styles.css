@@ -32,19 +32,20 @@ body {
 .text {
   font-family: VT323, monospace;
   display: inline-block;
-  font-size: 60px;
+  font-size: 50px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-top: 56px;
+  margin-top: 50px;
 }
 
 #counter {
-  margin-bottom: 56px;
+  margin-bottom: 50px;
 }
 
 #result {
   margin-top: 26px;
+  margin-bottom: 10px;
 }
 
 #egg {
@@ -54,8 +55,7 @@ body {
 
 #action-btn {
   display: flex;
-  width: 292px;
-  padding: 8px 16px;
+  width: 250px;
   justify-content: center;
   align-items: center;
   font-size: 50px;
