@@ -4,6 +4,7 @@ interface GameParams {
   eggElement: HTMLImageElement | null;
   counterElement: HTMLParagraphElement | null;
   resultElement: HTMLParagraphElement | null;
+  actionBtnElement: HTMLButtonElement | null;
 }
 
 interface GameInterface extends GameParams {}
@@ -12,6 +13,7 @@ export class Game implements GameInterface {
   eggElement: HTMLImageElement | null = null;
   counterElement: HTMLParagraphElement | null = null;
   resultElement: HTMLParagraphElement | null = null;
+  actionBtnElement: HTMLButtonElement | null = null;
   stopWatch: number | null = null;
   secondsPassed: number = 0;
   eggInstance: Egg = new Egg({
@@ -26,6 +28,7 @@ export class Game implements GameInterface {
     this.counterElement = params.counterElement;
     this.eggElement = params.eggElement;
     this.resultElement = params.resultElement;
+    this.actionBtnElement = params.actionBtnElement;
     this.displayEggClicks();
     this.mountEgg();
     console.log("game started");
@@ -51,6 +54,38 @@ export class Game implements GameInterface {
     clearInterval(this.stopWatch);
   }
 
+  showResetButton() {
+    if (!this.actionBtnElement) {
+      throw new Error("Reset button not found");
+    }
+    this.actionBtnElement.innerText = "Restart";
+    this.actionBtnElement.classList.remove("hidden");
+    this.actionBtnElement.addEventListener(
+      "click",
+      this.restartGame.bind(this)
+    );
+  }
+
+  hideResetButton() {
+    if (!this.actionBtnElement) {
+      throw new Error("Reset button not found");
+    }
+    this.actionBtnElement.classList.add("hidden");
+    this.actionBtnElement.removeEventListener(
+      "click",
+      this.restartGame.bind(this)
+    );
+  }
+
+  restartGame() {
+    this.secondsPassed = 0;
+    this.displayResult();
+    this.eggInstance.eggClicks = 0;
+    this.displayEggClicks();
+    this.displayEgg();
+    this.hideResetButton();
+  }
+
   updateEggClick() {
     this.eggInstance.tapEgg();
     this.displayEggClicks();
@@ -61,7 +96,7 @@ export class Game implements GameInterface {
     }
   }
 
-  mountEgg() {
+  displayEgg() {
     if (!this.eggElement) {
       throw new Error("Egg not found");
     }
@@ -71,7 +106,23 @@ export class Game implements GameInterface {
       throw new Error("Egg image not found");
     }
     this.eggElement.src = eggImgSrc;
+  }
+
+  mountEgg() {
+    if (!this.eggElement) {
+      throw new Error("Egg not found");
+    }
+    this.displayEgg();
     this.eggElement.addEventListener("click", this.updateEggClick.bind(this));
+  }
+
+  displayResult() {
+    if (!this.resultElement) {
+      throw new Error("Result element not found");
+    }
+    this.resultElement.innerText = !!this.secondsPassed
+      ? (this.secondsPassed / 1000).toString() + " seconds"
+      : "";
   }
 
   hatchEgg() {
@@ -83,11 +134,9 @@ export class Game implements GameInterface {
     if (!eggImgSrc) {
       throw new Error("Tamago image not found");
     }
-    if (!this.resultElement) {
-      throw new Error("Result image not found");
-    }
     this.eggElement.src = eggImgSrc;
-    this.resultElement.innerText = this.secondsPassed / 1000 + " seconds";
+    this.displayResult();
     this.stopStopWatch();
+    this.showResetButton();
   }
 }

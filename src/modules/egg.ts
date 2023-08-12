@@ -21,6 +21,7 @@ export class Egg {
     this.clicksToHatch = clicksToHatch;
     this.onEggHatch = onEggHatch;
   }
+
   tapEgg() {
     if (this.eggClicks >= this.clicksToHatch) {
       return;
